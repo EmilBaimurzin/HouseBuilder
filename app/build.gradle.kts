@@ -13,7 +13,7 @@ android {
         applicationId = "com.builder.game"
         minSdk = 23
         targetSdk = 33
-        maxSdk = 34
+        maxSdk = 33
         versionCode = 1
         versionName = "1.0"
 
