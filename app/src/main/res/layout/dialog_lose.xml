@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
+    
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="360dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:background="@drawable/game_over">
+
+        <TextView
+            android:id="@+id/floorsAmount"
+            style="@style/BasicText"
+            android:layout_width="210dp"
+            android:scaleY="0.9"
+            android:scaleX="0.9"
+            android:textSize="48sp"
+            android:layout_height="75dp"
+            android:layout_marginTop="120dp"
+            android:background="@drawable/score01"
+            tools:text="123" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_height="wrap_content">
+
+            <com.builder.game.core.library.CustomImageButton
+                android:id="@+id/menu"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:src="@drawable/menu"/>
+
+            <com.builder.game.core.library.CustomImageButton
+                android:layout_marginStart="15dp"
+                android:id="@+id/restart"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:src="@drawable/restart"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

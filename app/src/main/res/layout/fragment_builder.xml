@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/background02"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/flyingFloorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <FrameLayout
+        android:id="@+id/piggiesLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/piggies"
+            android:layout_width="150dp"
+            android:scaleY="2.5"
+            android:scaleX="2.5"
+            android:paddingBottom="20dp"
+            android:layout_height="76dp"
+            android:src="@drawable/piglets"/>
+
+    </FrameLayout>
+    
+    <FrameLayout
+        android:id="@+id/craneLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/crane"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/craneCorpus"
+                android:layout_width="300dp"
+                android:layout_marginStart="14dp"
+                android:layout_height="110dp"
+                android:src="@drawable/crane"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/craneCable"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/craneCable"
+                android:layout_width="40dp"
+                android:layout_height="140dp"
+                android:layout_marginTop="-25dp"
+                android:src="@drawable/crane02"
+                app:layout_constraintEnd_toEndOf="@+id/craneFloor"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/craneCorpus" />
+
+            <ImageView
+                android:id="@+id/craneFloor"
+                android:layout_width="150dp"
+                android:layout_height="76dp"
+                android:src="@drawable/floor01"
+
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/craneCable" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </FrameLayout>
+
+    <com.builder.game.core.library.CustomImageButton
+        android:id="@+id/menu"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_margin="10dp"
+        android:src="@drawable/menu"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/floorsAmount"
+        style="@style/BasicText"
+        android:layout_width="70dp"
+        android:layout_height="25dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/score01"
+        app:layout_constraintBottom_toBottomOf="@+id/menu"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/menu"
+        tools:text="123" />
+
+    <ImageView
+        android:id="@+id/progressBg"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:src="@drawable/danger01"
+        android:layout_marginEnd="20dp"
+        android:layout_width="180dp"
+        android:layout_height="25dp"
+        app:layout_constraintBottom_toBottomOf="@+id/menu"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/menu" />
+
+    <ImageView
+        android:id="@+id/progress"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="143dp"
+        android:src="@drawable/progress"
+        android:layout_height="8dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginStart="30dp"
+        app:layout_constraintBottom_toBottomOf="@+id/menu"
+        app:layout_constraintStart_toStartOf="@+id/progressBg"
+        app:layout_constraintTop_toTopOf="@+id/menu" />
+
+    <com.builder.game.core.library.CustomImageButton
+        android:id="@+id/protect"
+        android:layout_width="110dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/protect"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progressBg" />
+
+    <LinearLayout
+        android:id="@+id/floorsLayout"
+        android:gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="600dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <ImageView
+        android:id="@+id/wind"
+        android:layout_marginTop="-40dp"
+        android:layout_width="240dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="-100dp"
+        android:src="@drawable/wind"
+        app:layout_constraintStart_toEndOf="@+id/wolf"
+        app:layout_constraintTop_toTopOf="@+id/wolf" />
+
+    <ImageView
+        android:id="@+id/wolf"
+        android:layout_width="250dp"
+        android:layout_marginStart="-70dp"
+        android:layout_height="300dp"
+        android:src="@drawable/wolf"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
