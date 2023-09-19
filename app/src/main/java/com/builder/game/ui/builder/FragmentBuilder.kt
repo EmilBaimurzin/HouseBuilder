@@ -10,13 +10,13 @@ import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.builder.game.R
 import com.builder.game.ui.other.ViewBindingFragment
 import com.builder.game.databinding.FragmentBuilderBinding
 import com.builder.game.domain.Difficulty
 import com.builder.game.domain.Floor
+import com.builder.game.ui.dialog.DialogLose
+import com.builder.game.ui.other.MainActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -25,7 +25,6 @@ import kotlin.math.roundToInt
 class FragmentBuilder :
     ViewBindingFragment<FragmentBuilderBinding>(FragmentBuilderBinding::inflate) {
     private val viewModel: BuilderViewModel by viewModels()
-    private val args: FragmentBuilderArgs by navArgs()
     private val xy by lazy {
         val display = requireActivity().windowManager.defaultDisplay
         val size = Point()
@@ -36,7 +35,7 @@ class FragmentBuilder :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.menu.setOnClickListener {
-            findNavController().popBackStack(R.id.fragmentMain, false, false)
+            (requireActivity() as MainActivity).navigateBack("main")
         }
 
         binding.floorsLayout.setOnClickListener {
@@ -49,8 +48,8 @@ class FragmentBuilder :
             end()
         }
 
-        if (!args.isContinue) {
-            viewModel.craneSpeed = when (args.difficulty) {
+        if (arguments?.getBoolean("IS_CONTINUE") == false) {
+            viewModel.craneSpeed = when (arguments?.getSerializable("DIFFICULTY") as Difficulty) {
                 Difficulty.EASY -> 10
                 Difficulty.INTERMEDIATE -> 20
                 Difficulty.HARD -> 30
@@ -130,12 +129,12 @@ class FragmentBuilder :
                     lifecycleScope.launch {
                         delay(20)
 
-                        if (!args.isContinue) {
+                        if (arguments?.getBoolean("IS_CONTINUE") == false) {
                             viewModel.initFloor((xy.first / 2 - (binding.craneFloor.width / 2)).toFloat())
                         }
                         viewModel.isInit = true
 
-                        if (args.isContinue) {
+                        if (arguments?.getBoolean("IS_CONTINUE") == true) {
                             viewModel.initFromDB()
                         }
                     }
@@ -207,16 +206,16 @@ class FragmentBuilder :
             viewModel.deleteGame()
             viewModel.stop()
             viewModel.gameState = false
-            findNavController().navigate(
-                FragmentBuilderDirections.actionFragmentBuilderToDialogLose(
-                    viewModel.currentFloors.value!!.size,
-                    when (viewModel.craneSpeed) {
+            (requireActivity() as MainActivity).navigateToDialog(DialogLose().apply {
+                arguments = Bundle().apply {
+                    putInt("FLOORS", viewModel.currentFloors.value!!.size)
+                    putSerializable("DIFFICULTY", when (viewModel.craneSpeed) {
                         10 -> Difficulty.EASY
                         20 -> Difficulty.INTERMEDIATE
                         else -> Difficulty.HARD
-                    }
-                )
-            )
+                    })
+                }
+            })
         }
     }
 

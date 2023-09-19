@@ -4,13 +4,16 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
+
 import com.builder.game.domain.Difficulty
 import com.builder.game.ui.other.ViewBindingFragment
 import com.builder.game.R
 import com.builder.game.databinding.FragmentDifficultyBinding
+import com.builder.game.ui.builder.FragmentBuilder
+import com.builder.game.ui.other.MainActivity
 
-class FragmentDifficulty: ViewBindingFragment<FragmentDifficultyBinding>(FragmentDifficultyBinding::inflate) {
+class FragmentDifficulty :
+    ViewBindingFragment<FragmentDifficultyBinding>(FragmentDifficultyBinding::inflate) {
     private val viewModel: DifficultyViewModel by viewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -28,11 +31,16 @@ class FragmentDifficulty: ViewBindingFragment<FragmentDifficultyBinding>(Fragmen
         }
 
         binding.close.setOnClickListener {
-            findNavController().popBackStack()
+            (requireActivity() as MainActivity).navigateBack()
         }
 
         binding.play.setOnClickListener {
-            findNavController().navigate(FragmentDifficultyDirections.actionFragmentDifficultyToFragmentBuilder(viewModel.difficulty.value!!, false))
+            (requireActivity() as MainActivity).navigate(FragmentBuilder().apply {
+                arguments = Bundle().apply {
+                    putSerializable("DIFFICULTY", viewModel.difficulty.value!!)
+                    putSerializable("IS_CONTINUE", false)
+                }
+            })
         }
 
         viewModel.difficulty.observe(viewLifecycleOwner) {

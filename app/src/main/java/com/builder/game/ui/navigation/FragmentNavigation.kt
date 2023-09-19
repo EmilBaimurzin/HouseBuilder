@@ -6,13 +6,14 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.builder.game.ui.other.ViewBindingFragment
-import com.builder.game.R
 import com.builder.game.core.library.shortToast
 import com.builder.game.data.data_base.Database
 import com.builder.game.databinding.FragmentNavigationBinding
 import com.builder.game.domain.Difficulty
+import com.builder.game.ui.builder.FragmentBuilder
+import com.builder.game.ui.difficulty.FragmentDifficulty
+import com.builder.game.ui.other.MainActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -24,10 +25,10 @@ class FragmentNavigation :
 
         binding.apply {
             play.setOnClickListener {
-                findNavController().navigate(R.id.action_fragmentMain_to_fragmentDifficulty)
+                (requireActivity() as MainActivity).navigate(FragmentDifficulty())
             }
             coontinue.setOnClickListener {
-                lifecycleScope.launch (Dispatchers.Default) {
+                lifecycleScope.launch(Dispatchers.Default) {
                     val list = Database.instance.dao().getAllGames()
                     if (list.isEmpty()) {
                         withContext(Dispatchers.Main) {
@@ -35,12 +36,15 @@ class FragmentNavigation :
                         }
                     } else {
                         withContext(Dispatchers.Main) {
-                            findNavController().navigate(
-                                FragmentNavigationDirections.actionFragmentMainToFragmentBuilder(
-                                    Difficulty.EASY,
-                                    true
-                                )
-                            )
+                            (requireActivity() as MainActivity).navigate(FragmentBuilder().apply {
+                                arguments = Bundle().apply {
+                                    putSerializable(
+                                        "DIFFICULTY",
+                                        Difficulty.EASY
+                                    )
+                                    putBoolean("IS_CONTINUE", true)
+                                }
+                            })
                         }
                     }
                 }

@@ -4,15 +4,17 @@ import android.app.Dialog
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.builder.game.R
 import com.builder.game.core.library.ViewBindingDialog
+import com.builder.game.core.library.l
 import com.builder.game.databinding.DialogLoseBinding
-import com.builder.game.ui.navigation.FragmentNavigationDirections
+import com.builder.game.domain.Difficulty
+import com.builder.game.ui.builder.FragmentBuilder
+import com.builder.game.ui.other.MainActivity
+
 
 class DialogLose : ViewBindingDialog<DialogLoseBinding>(DialogLoseBinding::inflate) {
-    private val args: DialogLoseArgs by navArgs()
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return Dialog(requireContext(), R.style.Dialog_No_Border)
     }
@@ -22,20 +24,29 @@ class DialogLose : ViewBindingDialog<DialogLoseBinding>(DialogLoseBinding::infla
         dialog!!.setCancelable(false)
         dialog!!.setOnKeyListener { _, keyCode, _ ->
             if (keyCode == KeyEvent.KEYCODE_BACK) {
-                findNavController().popBackStack(R.id.fragmentMain, false, false)
+                (requireActivity() as MainActivity).navigateBack("main")
+                dialog?.cancel()
                 true
             } else {
                 false
             }
         }
         binding.menu.setOnClickListener {
-            findNavController().popBackStack(R.id.fragmentMain, false, false)
+            (requireActivity() as MainActivity).navigateBack("main")
+            dialog?.cancel()
         }
+        l(arguments.toString())
         binding.restart.setOnClickListener {
-            findNavController().popBackStack(R.id.fragmentMain, false, false)
-            findNavController().navigate(FragmentNavigationDirections.actionFragmentMainToFragmentBuilder(args.difficulty, false))
+            val difficulty = arguments?.getSerializable("DIFFICULTY") as Difficulty
+            (requireActivity() as MainActivity).navigate(FragmentBuilder().apply {
+                arguments = Bundle().apply {
+                    putSerializable("DIFFICULTY", difficulty)
+                    putBoolean("IS_CONTINUE", false)
+                }
+            })
+            dialog?.cancel()
         }
 
-        binding.floorsAmount.text = args.floors.toString()
+        binding.floorsAmount.text = arguments?.getInt("FLOORS").toString()
     }
 }
